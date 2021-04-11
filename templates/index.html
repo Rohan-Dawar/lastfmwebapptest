@@ -17,7 +17,7 @@
   <hr>
   <h4>{{ user.username }} Total Scrobbles: {{ "{:,.0f}".format(user.playcount) }} | Average {{ "{:.2f}".format(user.playcount/user.DTdelta) }} Scrobbles/Day</h4>
   <h4>Joined Lastfm: {{user.registeredDT}} | {{user.DTdelta}} days ago</h4>
-  <button type="button" class="button" onclick="window.location.href='/imports'">Import All Scrobbles</button>
+<!--   <button type="button" class="button" onclick="window.location.href='/imports'">Import All Scrobbles</button> -->
   {% endfor %}
 
   <div class="grid-container">
