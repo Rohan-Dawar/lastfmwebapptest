@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+{% block head %}
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+  <title>Rohan's Lastfm Webapp</title>
+{% endblock %}
+
+{% block body %}
+  <h1>Rohan's Lastfm Web App</h1>
+  <form action="/" method="POST" id="userEntry">
+    <p>Enter your Last.fm Username:</p>
+    <input type="text" name="content" id="content">
+    <input type="submit" class="button" value="Submit">
+  </form>
+
+  {% for user in USER %}
+  <hr>
+  <h4>{{ user.username }} Total Scrobbles: {{ "{:,.0f}".format(user.playcount) }} | Average {{ "{:.2f}".format(user.playcount/user.DTdelta) }} Scrobbles/Day</h4>
+  <h4>Joined Lastfm: {{user.registeredDT}} | {{user.DTdelta}} days ago</h4>
+  <button type="button" class="button" onclick="window.location.href='/imports'">Import All Scrobbles</button>
+  {% endfor %}
+
+  <div class="grid-container">
+    <div class="grid-item" id="top-artist-barchart">
+      <center><h1 class="link"><a href='/toppanel/0' class="link">{{ ARTtitle }}</a></h1></center>
+      <center>
+        <canvas id="ARTchart" width="450" height="400"></canvas>
+        <script>
+        var barData = {
+          labels : [
+            {% for item in ARTlabels %}
+            "{{ item }}",
+            {% endfor %}
+          ],
+          datasets : [{
+            borderColor: "#c2dfed",
+            borderWidth: 1,
+            backgroundColor: "#5e8091",
+            hoverBackgroundColor: "#97bbcd",
+            data : [
+              {% for item in ARTvalues %}
+              "{{ item }}",
+              {% endfor %}
+            ]
+          }
+        ]
+      }
+      var myARTChart = new Chart(document.getElementById("ARTchart").getContext("2d"), {
+        type: 'horizontalBar',
+        data: barData,
+        options: {
+          legend: {
+            display: false
+          },
+          scales: {
+            xAxes: [{
+              display: false,
+              ticks: {
+                min: 0
+              }
+            }],
+            yAxes: [{
+              display: true
+            }],
+          }
+        }
+      });
+      </script>
+    </center>
+  </div>
+
+  <div class="grid-item" id="top-album-barchart">
+    <center><h1 class="link"><a href='/toppanel/1' class="link">{{ ALBtitle }}</a></h1></center>
+    <center>
+      <canvas id="ALBchart" width="450" height="400"></canvas>
+      <script>
+      var barData = {
+        labels : [
+          {% for item in ALBlabels %}
+          "{{ item }}",
+          {% endfor %}
+        ],
+        datasets : [{
+          borderColor: "#c2dfed",
+          borderWidth: 1,
+          backgroundColor: "#5e8091",
+          hoverBackgroundColor: "#97bbcd",
+          data : [
+            {% for item in ALBvalues %}
+            "{{ item }}",
+            {% endfor %}
+          ]
+        }
+      ]
+    }
+    var myALBChart = new Chart(document.getElementById("ALBchart").getContext("2d"), {
+      type: 'horizontalBar',
+      data: barData,
+      options: {
+        legend: {
+          display: false
+        },
+        scales: {
+          xAxes: [{
+            display: false,
+            ticks: {
+              min: 0
+            }
+          }],
+          yAxes: [{
+            display: true
+          }],
+        }
+      }
+    });
+    </script>
+  </center></div>
+
+
+  <div class="grid-item" id="top-track-barchart">
+    <center><h1 class="link"><a href='/toppanel/2' class="link">{{ TRXtitle }}</a></h1></center>
+  <center>
+    <canvas id="TRXchart" width="450" height="400"></canvas>
+    <script>
+    var barData = {
+      labels : [
+        {% for item in TRXlabels %}
+        "{{ item }}",
+        {% endfor %}
+      ],
+      datasets : [{
+        borderColor: "#c2dfed",
+        borderWidth: 1,
+        backgroundColor: "#5e8091",
+        hoverBackgroundColor: "#97bbcd",
+        data : [
+          {% for item in TRXvalues %}
+          "{{ item }}",
+          {% endfor %}
+        ]
+      }
+    ]
+  }
+  var myTRXChart = new Chart(document.getElementById("TRXchart").getContext("2d"), {
+    type: 'horizontalBar',
+    data: barData,
+    options: {
+      legend: {
+        display: false
+      },
+      scales: {
+        xAxes: [{
+          display: false,
+          ticks: {
+            min: 0
+          }
+        }],
+        yAxes: [{
+          display: true
+        }],
+      }
+    }
+  });
+  </script>
+</center></div>
+
+<div class="grid-item"></div>
+<div class="grid-item"></div>
+<div class="grid-item"></div>
+<div class="grid-item"></div>
+<div class="grid-item"></div>
+<div class="grid-item"></div>
+</div>
+
+{% endblock %}

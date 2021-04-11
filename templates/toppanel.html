@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>{{paneltype}}</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/panel.css') }}">
+</head>
+
+<body>
+  {% if paneltype == 0 %}
+  <center><h1>Top Artists</h1></center>
+  {% elif paneltype == 1 %}
+  <center><h1>Top Albums</h1></center>
+  {% elif paneltype == 2 %}
+  <center><h1>Top Tracks</h1></center>
+  {% elif paneltype == 3 %}
+  <center><h1>Cumulative Scrobbles</h1></center>
+  <center>
+    <div id="myChart"></div>
+    <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+    <script>
+    zingchart.render({
+      id: 'myChart',
+      data: {
+        type: 'line',
+        series: [
+          { values: [
+            {% set count = 0 %}
+            {% for item in listOfUts %}
+            {% set count = count + 1 %}
+            ["{{ item }}", "{{ count }}"],
+            {% endfor %}
+          ] }
+        ]
+      }
+    });
+  </script>
+</center>
+<h4>Length of List Of UTS: {{listOfUts | length }}</h4>
+<h4>List Of UTS: {{listOfUts}}</h4>
+{% endif %}
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+  <title>Rohan's Lastfm Webapp</title>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
+</head>
+<body>
+  <h1>Rohan's Lastfm Web App</h1>
+  <form action="/" method="POST" id="userEntry">
+    <p>Enter your Last.fm Username:</p>
+    <input type="text" name="content" id="content">
+    <input type="submit" value="Submit">
+  </form>
+
+  {% if albObjs|length >1 %}
+  <button type="button" onclick="window.location.href='/clear'">Clear OBJS</button>
+  <button type="button" onclick="window.location.href='/bar'">Bar Chart</button>
+  <hr>
+
+  <table style='width:30%' class="table floatLeft">
+    <tr>
+      <th>Cover</th>
+      <th>Album</th>
+      <th>Artist</th>
+      <th>Playcount</th>
+    </tr>
+    {% for album in albObjs %}
+    <tr>
+      <td><img src={{ album.img }} alt={{album.albumName}} id="logo"></td>
+      <td>{{ album.albumName }}</td>
+      <td>{{ album.artistName }}</td>
+      <td>{{ album.playCount }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% endif %}
+
+  {% if artObjs|length >1 %}
+  <table style='width:30%' class="table floatMid">
+    <tr>
+      <th>Image</th>
+      <th>Artist</th>
+      <th>Playcount</th>
+    </tr>
+    {% for artist in artObjs %}
+    <tr>
+      <td><img src={{ artist.img }} alt={{artist.artistName}} id="logo"></td>
+      <td>{{ artist.artistName }}</td>
+      <td>{{ artist.playCount }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% endif %}
+
+  {% if traxObjs|length >1 %}
+  <table style='width:30%' class="table floatRight">
+    <tr>
+      <th>Track</th>
+      <th>Artist</th>
+      <th>Playcount</th>
+    </tr>
+    {% for track in traxObjs %}
+    <tr>
+      <td>{{ track.trackName }}</td>
+      <td>{{ track.artistName }}</td>
+      <td>{{ track.playCount }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% endif %}
+
+</body>
+</html>
