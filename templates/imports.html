@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block head %}
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+  <title>Rohan's Lastfm Webapp</title>
+{% endblock %}
+
+{% block body %}
+  <h1>Rohan's Lastfm Web App</h1>
+  <form action="/" method="POST" id="userEntry">
+    <p>Enter your Last.fm Username:</p>
+    <input type="text" name="content" id="content">
+    <input type="submit" class="button" value="Submit">
+  </form>
+
+  {% for user in USER %}
+  <hr>
+  <h4>{{ user.username }} Total Scrobbles: {{ "{:,.0f}".format(user.playcount) }} | Average {{ "{:.2f}".format(user.playcount/user.DTdelta) }} Scrobbles/Day</h4>
+  <h4>Joined Lastfm: {{user.registeredDT}} | {{user.DTdelta}} days ago</h4>
+
+  {% if not importing %}
+  	<button type="button" class="button" onclick="window.location.href='/imports'">Import All Scrobbles</button>
+	{% endif %}
+
+    {% if importing %}
+
+    <b>Importing Scrobbles... Page </b>
+    <b id='result'>1</b>
+    <b>/ {{ totalpages }}</b>
+
+    <script>
+    document.getElementById("result").innerHTML;
+      var intervalID = setInterval(update_values,1000);
+	  $SCRIPT_ROOT = {{request.script_root|tojson|safe}};
+	  function update_values() {
+	    $.getJSON($SCRIPT_ROOT + '/imported',
+	    function(data) {
+	    	if (data.result == {{totalpages}}) {window.location.href = "/imported";}
+	    	else {
+	      $('#result').text(data.result);}
+	    });
+
+	  };
+	  
+    </script>
+
+    {% endif %}
+
+
+  {% endfor %}
+{% endblock %}
